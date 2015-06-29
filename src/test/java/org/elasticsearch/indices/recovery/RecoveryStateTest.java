@@ -155,7 +155,7 @@ public class RecoveryStateTest extends ElasticsearchTestCase {
         if (randomBoolean()) {
             timer.stop();
             assertThat(timer.stopTime(), greaterThanOrEqualTo(timer.startTime()));
-            assertThat(timer.time(), equalTo(timer.stopTime() - timer.startTime()));
+            assertThat(timer.time(), lessThanOrEqualTo(timer.stopTime() - timer.startTime()));
             lastRead = streamer.serializeDeserialize();
             assertThat(lastRead.startTime(), equalTo(timer.startTime()));
             assertThat(lastRead.time(), equalTo(timer.time()));
@@ -287,8 +287,7 @@ public class RecoveryStateTest extends ElasticsearchTestCase {
         if (completeRecovery) {
             assertThat(filesToRecover.size(), equalTo(0));
             index.stop();
-            assertThat(index.time(), equalTo(index.stopTime() - index.startTime()));
-            assertThat(index.time(), equalTo(index.stopTime() - index.startTime()));
+            assertThat(index.time(), lessThanOrEqualTo(index.stopTime() - index.startTime()));
         }
 
         logger.info("testing serialized information");
